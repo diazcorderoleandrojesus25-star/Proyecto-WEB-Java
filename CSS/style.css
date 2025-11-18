@@ -1,0 +1,114 @@
+/* ==== General ==== */
+body {
+    background: #eef1f7;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 15px;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==== Contenedor ==== */
+.container {
+    background: #fff;
+    padding: 25px;
+    margin-top: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ==== Encabezados ==== */
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #34495e;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px;
+}
+
+/* ==== Formularios ==== */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #dcdfe6;
+    padding: 10px 12px;
+    transition: all 0.3s ease-in-out;
+    font-size: 14px;
+}
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0,123,255,0.25);
+    outline: none;
+}
+
+/* ==== Botones ==== */
+.btn {
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    transition: all 0.2s ease-in-out;
+    border: none;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.btn-primary { background: #007bff; color: #fff; }
+.btn-primary:hover { background: #0056b3; }
+
+.btn-secondary { background: #6c757d; color: #fff; }
+.btn-secondary:hover { background: #545b62; }
+
+.btn-danger { background: #e74c3c; color: #fff; }
+.btn-danger:hover { background: #c0392b; }
+
+.btn-success { background: #28a745; color: #fff; }
+.btn-success:hover { background: #1e7e34; }
+
+.btn-warning { background: #f39c12; color: #fff; }
+.btn-warning:hover { background: #d68910; }
+
+.btn-info { background: #17a2b8; color: #fff; }
+.btn-info:hover { background: #117a8b; }
+
+/* ==== Tabla ==== */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+.table thead {
+    background: linear-gradient(45deg, #007bff, #00c6ff);
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+}
+.table tbody tr {
+    transition: background 0.2s;
+}
+.table tbody tr:hover {
+    background: #f4f9ff;
+}
+.table td, .table th {
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+}
+
+/* ==== Alertas ==== */
+.alert {
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.alert-success {
+    background: #d1f2eb;
+    color: #1e8449;
+    border: 1px solid #a3e4d7;
+}
