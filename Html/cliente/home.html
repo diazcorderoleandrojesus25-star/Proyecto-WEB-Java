@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/cliente.css}" rel="stylesheet">
+    <title>JobXpress</title>
+
+    
+    <script>
+        
+        if (performance.navigation.type === 2) {
+            window.location.replace("/login");
+        }
+
+        
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                window.location.replace("/login");
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+
+        <!-- Cerrar sesión -->
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Cerrar sesión
+        </a>
+
+        <!-- FORMULARIO DE LOGOUT -->
+        <form id="logout-form" th:action="@{/logout}" method="post" style="display:none;"></form>
+    </nav>
+</header>
+
+<main>
+
+    <section id="inicio">
+        <h1>Servicios que ofrecemos</h1>
+        <p>
+            En JobXpress ofrecemos una amplia gama de servicios diseñados para cubrir las necesidades cotidianas de nuestros usuarios...
+        </p>
+    </section>
+
+    <section id="servicios">
+        <div class="tarjetas">
+
+            <!-- PLOMERÍA -->
+            <div class="tarjeta">
+                <img th:src="@{/images/plomeria.png}" alt="plomeria">
+                <a th:href="@{/cliente/plomeria}"><h3>Plomería</h3></a>
+                <p>Soluciones rápidas para fugas, instalaciones y reparaciones en el hogar.</p>
+            </div>
+
+            <!-- ELECTRICIDAD -->
+            <div class="tarjeta">
+                <img th:src="@{/images/electricidad.png}" alt="electricidad">
+                <a th:href="@{/cliente/electricidad}"><h3>Electricidad</h3></a>
+                <p>Instalaciones eléctricas, arreglos y mantenimiento con seguridad garantizada.</p>
+            </div>
+
+            <!-- CARPINTERÍA -->
+            <div class="tarjeta">
+                <img th:src="@{/images/carpinteria.png}" alt="carpinteria">
+                <a th:href="@{/cliente/carpinteria}"><h3>Carpintería</h3></a>
+                <p>Reparación y fabricación de muebles, puertas, closets y más.</p>
+            </div>
+
+            <!-- LIMPIEZA -->
+            <div class="tarjeta">
+                <img th:src="@{/images/limpieza.png}" alt="limpieza">
+                <a th:href="@{/cliente/limpiezagen}"><h3>Limpieza general</h3></a>
+                <p>Servicio de limpieza residencial o de oficinas.</p>
+            </div>
+
+            <!-- SOPORTE TÉCNICO -->
+            <div class="tarjeta">
+                <img th:src="@{/images/soporte.png}" alt="soporte tecnico">
+                <a th:href="@{/cliente/soportetec}"><h3>Soporte técnico</h3></a>
+                <p>Revisión y solución de problemas en computadores y celulares.</p>
+            </div>
+
+            <!-- INSTALACIÓN -->
+            <div class="tarjeta">
+                <img th:src="@{/images/instalacion.png}" alt="instalacion">
+                <a th:href="@{/cliente/instalacionnequi}"><h3>Instalación de equipos</h3></a>
+                <p>Televisores, routers, aires acondicionados, cámaras y más.</p>
+            </div>
+
+            <!-- FISIOTERAPIA -->
+            <div class="tarjeta">
+                <img th:src="@{/images/fisio.png}" alt="fisioterapia">
+                <a th:href="@{/cliente/fisioterapia}"><h3>Fisioterapia</h3></a>
+                <p>Sesiones de rehabilitación física y terapias a domicilio.</p>
+            </div>
+
+            <!-- SALUD -->
+            <div class="tarjeta">
+                <img th:src="@{/images/salud.png}" alt="salud">
+                <a th:href="@{/cliente/salud}"><h3>Salud</h3></a>
+                <p>Atención médica básica o especializada.</p>
+            </div>
+
+            <!-- TUTORES -->
+            <div class="tarjeta">
+                <img th:src="@{/images/tutores.png}" alt="tutores">
+                <a th:href="@{/cliente/asesorias}"><h3>Tutores y asesorías</h3></a>
+                <p>Clases particulares y ayuda escolar.</p>
+            </div>
+
+            <!-- CUIDADORES -->
+            <div class="tarjeta">
+                <img th:src="@{/images/cuidadores.png}" alt="cuidador">
+                <a th:href="@{/cliente/cuidaranimales}"><h3>Cuidadores de animales</h3></a>
+                <p>Cuidado y paseo para mascotas.</p>
+            </div>
+
+            <!-- REDACCIÓN -->
+            <div class="tarjeta">
+                <img th:src="@{/images/redaccion.png}" alt="redaccion">
+                <a th:href="@{/cliente/redaccion}"><h3>Redacción de contenido</h3></a>
+                <p>Textos para blogs, páginas web y redes.</p>
+            </div>
+
+            <!-- MARKETING -->
+            <div class="tarjeta">
+                <img th:src="@{/images/marketing.png}" alt="marketing">
+                <a th:href="@{/cliente/marketing}"><h3>Marketing digital</h3></a>
+                <p>Estrategias, redes sociales y posicionamiento web.</p>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

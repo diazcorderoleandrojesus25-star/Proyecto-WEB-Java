@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/stylesplomeria.css}">
+    <title>Soporte Técnico</title>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<!-- Contenido principal -->
+<main class="contenedor">
+
+    <h1>Soporte Técnico</h1>
+    <p>
+        Profesionales disponibles para ayudarte con computadoras, redes, dispositivos y soluciones tecnológicas
+        a domicilio o de forma remota.
+    </p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Iteración del 1 al 9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <!-- Imagen -->
+            <img th:src="@{'/img/prestador' + ${i} + '.jpg'}"
+                 th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- Descripción según caso -->
+                <p th:switch="${i}">
+                    <span th:case="1">Técnico con 6 años de experiencia en mantenimiento preventivo y correctivo. Optimizo el rendimiento de tu equipo sin perder información.</span>
+                    <span th:case="2">Especialista en instalación y optimización de redes domésticas y empresariales. Diagnóstico rápido y soluciones eficientes.</span>
+                    <span th:case="3">Atiendo fallos de software, lentitud, virus o reinstalación del sistema. Servicio rápido por conexión remota o presencial.</span>
+                    <span th:case="4">Recupero archivos eliminados o inaccesibles desde discos duros, USB y memorias. Configuración de copias automáticas en la nube.</span>
+                    <span th:case="5">Configuro e instalo impresoras, multifuncionales y drivers. Solución de errores de conexión o impresión.</span>
+                    <span th:case="6">Asistencia personalizada para pequeñas empresas: redes, software, periféricos y soporte preventivo.</span>
+                    <span th:case="7">Cambio de pantallas, teclados, baterías y discos en laptops. Diagnóstico gratuito y repuestos garantizados.</span>
+                    <span th:case="8">Configuro antivirus, bloqueo de contenido y sistemas de protección para el uso seguro de internet en el hogar.</span>
+                    <span th:case="9">Instalo programas profesionales: diseño, contabilidad, arquitectura o educación. Acompañamiento en el uso inicial.</span>
+                </p>
+
+                <a th:href="@{/cliente/soportetecnico}">
+                    <button>Ver perfil</button>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

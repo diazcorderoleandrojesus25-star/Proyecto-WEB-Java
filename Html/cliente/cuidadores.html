@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/stylesplomeria.css}">
+    <title>Cuidadores de animales</title>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+
+        <!-- Cerrar sesión -->
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<main class="contenedor">
+    <h1>Cuidadores de animales</h1>
+    <p>Profesionales dedicados al cuidado y bienestar de tus mascotas. Ya sea en casa, durante tus viajes o en paseos diarios.</p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- 🔥 Ahora Thymeleaf usa una lista llamada "prestadores" -->
+        <div class="usuario" th:each="p : ${prestadores}">
+            <img th:src="@{/images/prestador{n}.jpg(n=${p.id})}" th:alt="'Prestador ' + ${p.id}">
+
+            <div class="info">
+                <h3 th:text="'Prestador ' + ${p.id}"></h3>
+                <p th:text="${p.descripcion}"></p>
+
+                <a href="#" class="btn">Ver perfil</a>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

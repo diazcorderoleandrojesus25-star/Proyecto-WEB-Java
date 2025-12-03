@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/stylesplomeria.css}" rel="stylesheet">
+    <title>Marketing digital</title>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<main class="contenedor">
+    <h1>Marketing digital</h1>
+    <p>
+        Servicios enfocados en mejorar la imagen, presencia digital y ventas de tu negocio mediante estrategias publicitarias y contenido creativo.
+    </p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Bucle de 1 a 9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <img th:src="@{/images/prestador{id}.jpg(id=${i})}" th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- Descripción por caso -->
+                <p th:switch="${i}">
+
+                    <span th:case="1">
+                        Diseño estrategias para aumentar la visibilidad de tu marca en redes sociales con contenido atractivo.
+                    </span>
+
+                    <span th:case="2">
+                        Manejo completo de redes sociales para negocios pequeños: posts, historias y atención básica.
+                    </span>
+
+                    <span th:case="3">
+                        Publicidad digital profesional en Facebook e Instagram Ads con campañas optimizadas.
+                    </span>
+
+                    <span th:case="4">
+                        Diseño y optimización de perfiles profesionales en redes sociales para fortalecer tu marca.
+                    </span>
+
+                    <span th:case="5">
+                        Asesorías para emprendedores en branding, contenido y captación inicial de clientes.
+                    </span>
+
+                    <span th:case="6">
+                        Creación de contenido gráfico profesional: flyers, historias, anuncios y material visual.
+                    </span>
+
+                    <span th:case="7">
+                        Análisis de métricas para mejorar el rendimiento y proponer estrategias de crecimiento.
+                    </span>
+
+                    <span th:case="8">
+                        Creación de catálogos digitales y contenido promocional para WhatsApp Business.
+                    </span>
+
+                    <span th:case="9">
+                        Redacción publicitaria para redes, páginas web y campañas. Mensajes claros y persuasivos.
+                    </span>
+
+                </p>
+
+                <a th:href="@{/cliente/marketing}" class="btn">Ver perfil</a>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

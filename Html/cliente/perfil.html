@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Cliente | JobXpress</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" th:href="@{/css/cliente.css}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Ícono del sitio -->
+  <link th:href="@{/images/icon.png}" rel="icon" type="image/png">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <h4>JobXpress</h4>
+  </div>
+
+  <nav class="nav-links">
+    <a th:href="@{/cliente/home}">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a th:href="@{/cliente/perfil}">Tu perfil</a>
+    <a th:href="@{/cliente/chat}">Chat</a>
+    <a th:href="@{/cliente/dashboard}">Dashboard</a>
+
+    <!-- Logout corregido -->
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      Cerrar sesión
+    </a>
+
+    <form id="logout-form" th:action="@{/logout}" method="post" style="display:none;"></form>
+  </nav>
+</header>
+
+<!-- PERFIL -->
+<main class="perfil">
+  <div class="perfil-container">
+
+    <h2 class="perfil-titulo">Tu perfil</h2>
+
+    <div class="perfil-card">
+
+      <!-- Imagen -->
+      <div class="perfil-imagen">
+        <img th:src="@{/images/perfil.png}" alt="Foto de perfil">
+      </div>
+
+      <!-- Información -->
+      <div class="perfil-info">
+
+        <h3 th:text="${usuario.nombre}">Nombre del usuario</h3>
+
+        <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+        <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+        <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}"></span></p>
+
+        <!-- CORREGIDO: rol.nombre NO existe -->
+        <p><strong>Rol:</strong> <span th:text="${usuario.rol.rol}"></span></p>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+
+
+</body>
+</html>

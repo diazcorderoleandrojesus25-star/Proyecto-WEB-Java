@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/stylesplomeria.css}">
+    <title>Limpieza General</title>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="contenedor">
+    <h1>Limpieza General</h1>
+    <p>
+        Profesionales disponibles para ayudarte con la limpieza general de tu hogar, oficina o negocio.
+    </p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Bucle 1 a 9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <img th:src="@{/img/prestador{id}.jpg(id=${i})}" th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- DESCRIPCIONES -->
+                <p th:switch="${i}">
+
+                    <span th:case="1">
+                        Realizo limpieza completa de casas y apartamentos, incluyendo pisos, baños y cocinas.
+                    </span>
+
+                    <span th:case="2">
+                        Limpieza profesional de oficinas, escritorios, equipos y espacios comunes.
+                    </span>
+
+                    <span th:case="3">
+                        Limpieza profunda de baños y cocinas con enfoque en desinfección total.
+                    </span>
+
+                    <span th:case="4">
+                        Limpieza posobra o posmudanza. Retiro de polvo y residuos difíciles.
+                    </span>
+
+                    <span th:case="5">
+                        Limpieza de muebles, colchones, tapicerías y alfombras con productos adecuados.
+                    </span>
+
+                    <span th:case="6">
+                        Limpieza ecológica con productos biodegradables y no tóxicos.
+                    </span>
+
+                    <span th:case="7">
+                        Servicios por horas o por días. Ideal para mantener el orden sin compromisos fijos.
+                    </span>
+
+                    <span th:case="8">
+                        Limpieza de vidrios, ventanas, espejos y superficies delicadas.
+                    </span>
+
+                    <span th:case="9">
+                        Limpieza general de espacios residenciales y comerciales con dedicación y detalle.
+                    </span>
+
+                </p>
+
+                <!-- HORARIOS -->
+                <p th:switch="${i}">
+                    <span th:case="1">🕒 Lunes a viernes, 10am–6pm • Con cita previa</span>
+                    <span th:case="2">🕒 Lunes a sábado, 7am–5pm • Atención el mismo día</span>
+                    <span th:case="3">🕒 Lunes a viernes, 8am–6pm • Cita con 1 día de anticipación</span>
+                    <span th:case="4">🕒 Disponible 24/7 • Emergencias < 1h</span>
+                    <span th:case="5">🕒 Lunes a sábado, 9am–4pm • Turnos en la mañana</span>
+                    <span th:case="6">🕒 Lunes a viernes, 8am–5:30pm • Agenda flexible</span>
+                    <span th:case="7">🕒 Lunes a sábado, 7:30am–6pm • Visitas el mismo día</span>
+                    <span th:case="8">🕒 Martes a sábado, 9am–5pm • Con 24h de anticipación</span>
+                    <span th:case="9">🕒 Lunes a domingo, 6am–10pm • Atención inmediata</span>
+                </p>
+
+                <a th:href="@{/cliente/limpiezageneral}">
+                    <button>Ver perfil</button>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+</body>
+</html>

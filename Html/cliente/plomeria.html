@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/stylesplomeria.css}" rel="stylesheet">
+    <title>Plomería</title>
+</head>
+<body>
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+
+<!-- Contenido principal -->
+<main class="contenedor">
+
+    <h1>Plomería</h1>
+    <p>Profesionales disponibles para ayudarte con instalaciones, reparaciones y soluciones hidráulicas en tu hogar o negocio.</p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Repetición de 1 a 9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <!-- Imagen -->
+            <img th:src="@{'/img/prestador' + ${i} + '.jpg'}" 
+                 th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <!-- Nombre -->
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- Descripción del switch -->
+                <p th:switch="${i}">
+                    <span th:case="1">Soy técnico en plomería con más de 7 años de experiencia solucionando filtraciones, cambios de grifería, limpieza de desagües y mantenimiento de sistemas hidráulicos.</span>
+                    <span th:case="2">Realizo instalaciones completas de tuberías en cocinas, baños, lavaderos y jardines. También atiendo remodelaciones.</span>
+                    <span th:case="3">Ofrezco atención inmediata en casos de fugas, rebosamientos, grifos rotos o taponamientos. Diagnóstico rápido.</span>
+                    <span th:case="4">Experta en localizar y reparar filtraciones no visibles que generan humedad en techos o paredes.</span>
+                    <span th:case="5">Me especializo en la conexión segura de electrodomésticos y dispositivos que requieren agua.</span>
+                    <span th:case="6">Servicio especializado para sistemas hidráulicos de estructuras antiguas.</span>
+                    <span th:case="7">Cambio e instalación de grifos, duchas y accesorios con acabados finos.</span>
+                    <span th:case="8">Equipo para destaponamientos rápidos sin dañar las instalaciones.</span>
+                    <span th:case="9">Solución a filtraciones, válvulas defectuosas y sanitarios que no descargan.</span>
+                </p>
+
+                <!-- Horarios -->
+                <p th:switch="${i}">
+                    <span th:case="1">🕒 Lunes a sábado, 7am – 5pm<br>📅 Atención el mismo día.</span>
+                    <span th:case="2">🕒 Lunes a viernes, 8am – 6pm<br>📅 Agenda 24h antes.</span>
+                    <span th:case="3">🕒 Disponible 24/7<br>📅 Emergencias rápidas.</span>
+                    <span th:case="4">🕒 Lunes a sábado, 9am – 4pm<br>📅 Turnos programados.</span>
+                    <span th:case="5">🕒 Lunes a viernes, 8am – 5:30pm<br>📅 Agenda semanal.</span>
+                    <span th:case="6">🕒 Lunes a sábado, 7:30am – 6pm<br>📅 Visitas programadas.</span>
+                    <span th:case="7">🕒 Martes a sábado, 9am – 5pm<br>📅 Cita previa.</span>
+                    <span th:case="8">🕒 Lunes a domingo, 6am – 10pm<br>📅 Atención inmediata.</span>
+                    <span th:case="9">🕒 Lunes a viernes, 10am – 6pm<br>📅 Citas programadas.</span>
+                </p>
+
+                <!-- Botón chat -->
+                <a th:href="@{/cliente/chat}">
+                    <button>Chatear con prestador</button>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/stylesplomeria.css}" rel="stylesheet">
+    <title>Redacción de contenido</title>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<main class="contenedor">
+
+    <h1>Redacción de contenido</h1>
+    <p>Profesionales disponibles para redactar artículos, revisar textos y crear contenido digital para páginas, redes o proyectos académicos.</p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Iteración del 1 al 9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <!-- Imagen -->
+            <img th:src="@{'/images/prestador' + ${i} + '.jpg'}"
+                 th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <!-- Nombre -->
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- Descripción según caso -->
+                <p th:switch="${i}">
+                    <span th:case="1">Creo artículos optimizados para blogs, páginas web y tiendas online. Uso palabras clave estratégicas para mejorar tu posicionamiento.</span>
+                    <span th:case="2">Redacto trabajos universitarios, ensayos argumentativos y reviso estilo y normas APA, MLA o ICONTEC.</span>
+                    <span th:case="3">Desarrollo textos persuasivos y creativos para Instagram, Facebook y TikTok, adaptados al lenguaje de tu marca.</span>
+                    <span th:case="4">Redacto textos que venden: anuncios, slogans, correos y páginas de ventas con enfoque estratégico y emocional.</span>
+                    <span th:case="5">Reviso y corrijo textos para que suenen naturales, coherentes y cumplan reglas ortográficas y gramaticales.</span>
+                    <span th:case="6">Redactor especializado en temas de tecnología, software, procesos industriales y documentación corporativa.</span>
+                    <span th:case="7">Redacto contenido accesible sobre nutrición, psicología, ejercicios y hábitos saludables.</span>
+                    <span th:case="8">Escribo crónicas, reseñas y guías turísticas con estilo cercano y descripciones atractivas.</span>
+                    <span th:case="9">Redacto historias que conectan con tu audiencia para construir comunidad y marca personal.</span>
+                </p>
+
+                <a href="#" class="btn">Ver perfil</a>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

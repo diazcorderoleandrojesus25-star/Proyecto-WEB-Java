@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/stylesplomeria.css}">
+    <title>Instalación de equipos</title>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <h4>JobXpress</h4>
+    </div>
+
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/chat}">Chat</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="contenedor">
+
+    <h1>Instalación de equipos</h1>
+    <p>
+        Profesionales disponibles para ayudarte con la instalación segura y eficiente de electrodomésticos,
+        equipos tecnológicos y sistemas eléctricos en tu hogar o negocio.
+    </p>
+
+    <div class="tarjetas-usuarios">
+
+        <!-- Loop 1..9 -->
+        <div class="usuario" th:each="i : ${#numbers.sequence(1,9)}">
+
+            <!-- Imagen -->
+            <img th:src="@{/img/prestador{id}.jpg(id=${i})}" th:alt="'Prestador ' + ${i}">
+
+            <div class="info">
+
+                <h3 th:text="'Prestador ' + ${i}"></h3>
+
+                <!-- DESCRIPCIONES -->
+                <p th:switch="${i}">
+
+                    <span th:case="1">
+                        Me encargo de instalar tu televisor en la pared con nivelación perfecta, cables ocultos
+                        y soporte seguro. Espacio limpio y moderno.
+                    </span>
+
+                    <span th:case="2">
+                        Instalo aires acondicionados tipo split y otros sistemas. También hago mantenimiento
+                        y recargas.
+                    </span>
+
+                    <span th:case="3">
+                        Instalo estufas, hornos y campanas con conexiones eléctricas o de gas.
+                        Trabajo con seguridad y limpieza.
+                    </span>
+
+                    <span th:case="4">
+                        Redes WiFi, repetidores y cableado estructurado. Señal estable en toda tu casa o negocio.
+                    </span>
+
+                    <span th:case="5">
+                        Instalación de cámaras de vigilancia y sistemas de seguridad. Asesoría completa y
+                        conexión al celular.
+                    </span>
+
+                    <span th:case="6">
+                        Conecto y nivelo lavadoras y secadoras con todas sus conexiones.
+                    </span>
+
+                    <span th:case="7">
+                        Instalación de sistemas de audio y teatro en casa para obtener sonido perfecto.
+                    </span>
+
+                    <span th:case="8">
+                        Instalación básica de paneles solares con conexiones seguras y eficientes.
+                    </span>
+
+                    <span th:case="9">
+                        Instalación de dispositivos inteligentes: cerraduras, luces, asistentes y más.
+                    </span>
+
+                </p>
+
+                <a th:href="@{/cliente/instalacion}">
+                    <button>Ver perfil</button>
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
