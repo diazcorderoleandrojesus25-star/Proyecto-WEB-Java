@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobXpress - Prestador</title>
+     
+    <script>
+        
+        if (performance.navigation.type === 2) {
+            window.location.replace("/login");
+        }
+
+        
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                window.location.replace("/login");
+            }
+        });
+    </script>
+
+    <link rel="stylesheet" th:href="@{/css/prestador.css}">
+    <link href="https://cdn.jsdelivr.net/npm/lucide-icons@latest/font/lucide.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAV BAR -->
+<header class="navbar">
+    <div class="logo">JobXpress</div>
+   <nav class="nav-links">
+      <a th:href="@{/prestador/home}">Inicio</a>
+      <a th:href="@{/prestador/servicioPrestador}">Tu servicio</a>
+      <a th:href="@{/prestador/perfil}">Tu Perfil</a>
+      <a th:href="@{/prestador/chat}">Chat</a>
+      <a th:href="@{/prestador/ganancias}">Tus ganancias</a>
+      <a th:href="@{/prestador/valoraciones}">Tus valoraciones</a>
+      <a th:href="@{/prestador/agenda}">Mi agenda</a>
+      <a th:href="@{/prestador/dashboard}">Dashboard</a>
+
+      <!-- Cerrar sesión -->
+      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          Cerrar sesión
+      </a>
+      <form id="logout-form" th:action="@{/logout}" method="POST" style="display:none;"></form>
+  </nav>
+  </header>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="panel-prestador">
+    <section class="bienvenida">
+        <h1>👋 Bienvenido, <span>Prestador</span></h1>
+        <p>
+            Gestiona tus servicios, revisa tus ganancias, consulta tu agenda y mantén el control total desde tu panel.
+        </p>
+    </section>
+
+    <!-- TARJETAS PRINCIPALES -->
+    <section class="tarjetas-panel">
+
+        <div class="tarjeta">
+            <i class="lucide lucide-wallet"></i>
+            <h3>Ganancias</h3>
+            <p>$1,250,000 COP</p>
+            <a th:href="@{/prestador/ganancias}" class="boton">Ver más</a>
+        </div>
+
+        <div class="tarjeta">
+            <i class="lucide lucide-wrench"></i>
+            <h3>Servicios activos</h3>
+            <p>4 servicios en curso</p>
+            <a th:href="@{/prestador/servicio}" class="boton">Ver detalles</a>
+        </div>
+
+        <div class="tarjeta">
+            <i class="lucide lucide-star"></i>
+            <h3>Valoraciones</h3>
+            <p>⭐ 4.8 / 5</p>
+            <a th:href="@{/prestador/valoraciones}" class="boton">Ver reseñas</a>
+        </div>
+
+        <div class="tarjeta">
+            <i class="lucide lucide-calendar"></i>
+            <h3>Próximas citas</h3>
+            <p>3 programadas</p>
+            <a th:href="@{/prestador/agenda}" class="boton">Abrir agenda</a>
+        </div>
+
+    </section>
+
+    <!-- SECCIÓN DE ACTIVIDAD RECIENTE -->
+    <section class="actividad-reciente">
+        <h2>📅 Actividad reciente</h2>
+        <ul>
+            <li>✅ Servicio completado: Plomería en Calle 10 #15.</li>
+            <li>💬 Nuevo mensaje de cliente: “Gracias por tu ayuda”.</li>
+            <li>⭐ Nueva valoración: 5 estrellas.</li>
+            <li>🕒 Próxima cita: 25 Oct, 2:00 PM.</li>
+        </ul>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>© 2025 JobXpress | Conectando profesionales con clientes</p>
+</footer>
+
+</body>
+</html>
