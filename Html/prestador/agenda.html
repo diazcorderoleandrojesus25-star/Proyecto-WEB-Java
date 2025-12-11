@@ -4,116 +4,304 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Agenda - JobXpress</title>
+
     <link rel="stylesheet" th:href="@{/css/styleagenda.css}">
+
+    <style>
+        .btn-aceptar {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-aceptar:hover { background-color:#3c8e3f; }
+
+        .btn-rechazar {
+            background-color: #d9534f;
+            color:white;
+            border:none;
+            padding:8px 14px;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        .btn-rechazar:hover{ background-color:#b63b37; }
+
+        .tarjeta-servicio {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+    </style>
+
+    <!-- NOMBRE FIJO DEL CLIENTE -->
+    <script>
+        const clienteActual = "Leandro Diaz"; 
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
 </head>
+
 <body>
 
 <header class="navbar">
     <div class="logo">JobXpress</div>
-   <nav class="nav-links">
-      <a th:href="@{/prestador/home}">Inicio</a>
-      <a th:href="@{/prestador/servicioPrestador}">Tu servicio</a>
-      <a th:href="@{/prestador/perfil}">Tu Perfil</a>
-      <a th:href="@{/prestador/chat}">Chat</a>
-      <a th:href="@{/prestador/ganancias}">Tus ganancias</a>
-      <a th:href="@{/prestador/valoraciones}">Tus valoraciones</a>
-      <a th:href="@{/prestador/agenda}">Mi agenda</a>
-      <a th:href="@{/prestador/dashboard}" class="activo">Dashboard</a>
+    <nav class="nav-links">
+        <a th:href="@{/prestador/home}">Inicio</a>
+        <a th:href="@{/prestador/servicioPrestador}">Tu servicio</a>
+        <a th:href="@{/prestador/perfil}">Tu Perfil</a>
+        <a th:href="@{/prestador/ganancias}">Tus ganancias</a>
+        <a th:href="@{/prestador/valoraciones}">Tus valoraciones</a>
+        <a th:href="@{/prestador/agenda}" class="activo">Mi agenda</a>
+        <a th:href="@{/prestador/dashboard}">Dashboard</a>
 
-      <!-- Cerrar sesión -->
-      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          Cerrar sesión
-      </a>
-      <form id="logout-form" th:action="@{/logout}" method="POST" style="display:none;"></form>
-  </nav>
+        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Cerrar sesión
+        </a>
+
+        <form id="logout-form" th:action="@{/logout}" method="POST" style="display:none;"></form>
+    </nav>
 </header>
 
 <main class="contenedor-principal">
+
     <section class="intro">
         <h1>Tu Agenda</h1>
-        <p>Consulta tus citas, servicios programados y organiza tu tiempo de manera eficiente.</p>
+        <p>Consulta tus citas y administra tus solicitudes.</p>
     </section>
 
     <section class="agenda-layout">
 
         <!-- CALENDARIO -->
         <div class="calendar-card">
-            <h2>Junio 2025</h2>
-
-            <div class="calendar">
-                <div class="day-name">Lun</div>
-                <div class="day-name">Mar</div>
-                <div class="day-name">Mié</div>
-                <div class="day-name">Jue</div>
-                <div class="day-name">Vie</div>
-                <div class="day-name">Sáb</div>
-                <div class="day-name">Dom</div>
-
-                <!-- DÍAS -->
-                <div class="day">1</div>
-                <div class="day">2</div>
-                <div class="day active">3</div>
-                <div class="day">4</div>
-                <div class="day active">5</div>
-                <div class="day">6</div>
-                <div class="day">7</div>
-                <div class="day">8</div>
-                <div class="day">9</div>
-                <div class="day">10</div>
-                <div class="day active">11</div>
-                <div class="day">12</div>
-                <div class="day">13</div>
-                <div class="day">14</div>
-                <div class="day">15</div>
-                <div class="day">16</div>
-                <div class="day">17</div>
-                <div class="day">18</div>
-                <div class="day">19</div>
-                <div class="day">20</div>
-                <div class="day">21</div>
-                <div class="day">22</div>
-                <div class="day">23</div>
-                <div class="day">24</div>
-                <div class="day">25</div>
-                <div class="day">26</div>
-                <div class="day">27</div>
-                <div class="day">28</div>
-                <div class="day">29</div>
-                <div class="day">30</div>
-            </div>
+            <h2>Calendario</h2>
+            <div id="calendarioFull" style="background:white; padding:15px; border-radius:15px;"></div>
         </div>
 
-        <!-- SERVICIOS -->
+        <!-- SOLICITUDES -->
         <div class="eventos-card">
-            <h2>Servicios Pendientes</h2>
 
-            <div class="tarjeta-servicio">
-                <h3>Restauración de electricidad</h3>
-                <p><strong>Cliente:</strong> Juan Pérez</p>
-                <p><strong>Fecha:</strong> 3 de Junio, 10:00 AM</p>
-                <p><strong>Ubicación:</strong> Calle 45 #12-30</p>
-                <a href="#" class="boton">Ver detalles</a>
-            </div>
+            <h2>Solicitudes Pendientes</h2>
+            <div id="listaSolicitudes"></div>
 
-            <div class="tarjeta-servicio">
-                <h3>Revisión eléctrica</h3>
-                <p><strong>Cliente:</strong> Laura García</p>
-                <p><strong>Fecha:</strong> 5 de Junio, 2:00 PM</p>
-                <p><strong>Ubicación:</strong> Cra 22 #8-17</p>
-                <a href="#" class="boton">Ver detalles</a>
-            </div>
-
-            <div class="tarjeta-servicio">
-                <h3>Instalación de aparatos electrónicos</h3>
-                <p><strong>Cliente:</strong> Carlos Díaz</p>
-                <p><strong>Fecha:</strong> 11 de Junio, 9:00 AM</p>
-                <p><strong>Ubicación:</strong> Av. 30 #20-60</p>
-                <a href="#" class="boton">Ver detalles</a>
-            </div>
+            <h2 style="margin-top: 35px;">Servicios Pendientes</h2>
+            <div id="listaServiciosPendientes"></div>
 
         </div>
+
     </section>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+
+/* ========================================================= */
+/* CALENDARIO */
+/* ========================================================= */
+function generarCalendario() {
+
+    let servicios = JSON.parse(localStorage.getItem("serviciosPendientes")) || [];
+
+    let eventos = servicios.map(s => {
+        return {
+            title: s.servicio,
+            start: s.fecha.split(" ")[0],
+            backgroundColor: "#4CAF50",
+            borderColor: "#4CAF50",
+            textColor: "white"
+        };
+    });
+
+    let calendarEl = document.getElementById('calendarioFull');
+
+    calendarEl.innerHTML = "";
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        height: 500,
+        events: eventos,
+        headerToolbar: {
+            left: 'title',
+            right: ''
+        }
+    });
+
+    calendar.render();
+}
+
+/* ========================================================= */
+/* CARGAR SOLICITUDES */
+/* ========================================================= */
+function cargarSolicitudes() {
+    let solicitudes = JSON.parse(localStorage.getItem("solicitudesPendientes")) || [];
+    let cont = document.getElementById("listaSolicitudes");
+    cont.innerHTML = "";
+
+    if (solicitudes.length === 0) {
+        cont.innerHTML = "<p>No tienes solicitudes pendientes.</p>";
+        return;
+    }
+
+    solicitudes.forEach((s,i) => {
+
+        if(!s.cliente || s.cliente === "Cliente Demo" || s.cliente === "Desconocido") {
+            s.cliente = clienteActual;
+        }
+
+        let card = document.createElement("div");
+        card.classList.add("tarjeta-servicio");
+
+        card.innerHTML = `
+            <h3>${s.servicio}</h3>
+            <p><strong>Cliente:</strong> ${s.cliente}</p>
+            <p><strong>Fecha:</strong> ${s.fecha}</p>
+            <p><strong>Ubicación:</strong> ${s.ubicacion}</p>
+
+            <button class="btn-aceptar" onclick="aceptar(${i})">Aceptar</button>
+            <button class="btn-rechazar" onclick="rechazar(${i})">Rechazar</button>
+        `;
+
+        cont.appendChild(card);
+    });
+
+    localStorage.setItem("solicitudesPendientes", JSON.stringify(solicitudes));
+}
+
+/* ========================================================= */
+/* SERVICIOS ACEPTADOS */
+/* ========================================================= */
+function cargarServiciosPendientes() {
+    let servicios = JSON.parse(localStorage.getItem("serviciosPendientes")) || [];
+    let cont = document.getElementById("listaServiciosPendientes");
+    cont.innerHTML = "";
+
+    if (servicios.length === 0) {
+        cont.innerHTML = "<p>No tienes servicios pendientes.</p>";
+        return;
+    }
+
+    servicios.forEach((s,i) => {
+
+        if(!s.cliente) s.cliente = clienteActual;
+
+        let card = document.createElement("div");
+        card.classList.add("tarjeta-servicio");
+
+        card.innerHTML = `
+            <h3>${s.servicio}</h3>
+            <p><strong>Cliente:</strong> ${s.cliente}</p>
+            <p><strong>Fecha:</strong> ${s.fecha}</p>
+            <p><strong>Ubicación:</strong> ${s.ubicacion}</p>
+
+            <button class="btn-aceptar" onclick="verDetalles(${i})">Ver detalles</button>
+        `;
+
+        cont.appendChild(card);
+    });
+
+    localStorage.setItem("serviciosPendientes", JSON.stringify(servicios));
+}
+
+/* ========================================================= */
+/* ACEPTAR SOLICITUD */
+/* ========================================================= */
+function aceptar(i){
+    let solicitudes = JSON.parse(localStorage.getItem("solicitudesPendientes")) || [];
+    let servicios = JSON.parse(localStorage.getItem("serviciosPendientes")) || [];
+    let historial = JSON.parse(localStorage.getItem("historialContrataciones")) || [];
+
+    let s = solicitudes[i];
+
+    if(!s.cliente) s.cliente = clienteActual;
+
+    servicios.push(s);
+    localStorage.setItem("serviciosPendientes", JSON.stringify(servicios));
+
+    historial = historial.map(h=>{
+        if(h.id === s.id){
+            h.estado = "Confirmado";
+            h.prestadorAcepto = true;
+        }
+        return h;
+    });
+
+    localStorage.setItem("historialContrataciones", JSON.stringify(historial));
+
+    solicitudes.splice(i,1);
+    localStorage.setItem("solicitudesPendientes", JSON.stringify(solicitudes));
+
+    cargarSolicitudes();
+    cargarServiciosPendientes();
+    generarCalendario();
+
+    Swal.fire("Solicitud aceptada","","success");
+}
+
+/* ========================================================= */
+/* RECHAZAR */
+/* ========================================================= */
+function rechazar(i){
+    let solicitudes = JSON.parse(localStorage.getItem("solicitudesPendientes")) || [];
+    let historial = JSON.parse(localStorage.getItem("historialContrataciones")) || [];
+
+    let s = solicitudes[i];
+
+    historial = historial.map(h=>{
+        if(h.id === s.id){
+            h.estado = "Rechazado";
+        }
+        return h;
+    });
+
+    localStorage.setItem("historialContrataciones", JSON.stringify(historial));
+
+    solicitudes.splice(i,1);
+    localStorage.setItem("solicitudesPendientes", JSON.stringify(solicitudes));
+
+    cargarSolicitudes();
+    Swal.fire("Solicitud rechazada","","error");
+}
+
+/* ========================================================= */
+/* DETALLES */
+/* ========================================================= */
+function verDetalles(i){
+    let lista = JSON.parse(localStorage.getItem("serviciosPendientes")) || [];
+    let s = lista[i];
+
+    if(!s.cliente) s.cliente = clienteActual;
+
+    Swal.fire({
+        title: s.servicio,
+        html: `
+            <p><strong>Cliente:</strong> ${s.cliente}</p>
+            <p><strong>Fecha:</strong> ${s.fecha}</p>
+            <p><strong>Ubicación:</strong> ${s.ubicacion}</p>
+            <p><strong>Monto:</strong> $${s.monto}</p>
+            <p><strong>Detalles:</strong><br>${s.detalles}</p>
+        `,
+        icon: "info",
+        confirmButtonText: "Cerrar"
+    });
+}
+
+/* ========================================================= */
+/* INICIALIZAR */
+/* ========================================================= */
+cargarSolicitudes();
+cargarServiciosPendientes();
+generarCalendario();
+
+</script>
 
 </body>
 </html>
