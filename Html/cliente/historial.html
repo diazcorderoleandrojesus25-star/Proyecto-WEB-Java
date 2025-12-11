@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/stylesplomeria.css}" rel="stylesheet">
+    <title>Historial de Contrataciones | JobXpress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      /* Pequeños estilos para botones (si no los tienes en tu CSS) */
+      .btn-editar { background:#bfe9ff; border:0; padding:8px 14px; border-radius:8px; cursor:pointer; color:#0277bd; margin-left:12px; }
+      .btn-cancelar { background:#ffd6d6; border:0; padding:8px 14px; border-radius:8px; cursor:pointer; color:#c0392b; margin-left:8px; }
+      .btn-disabled { background:#eee; padding:8px 14px; border-radius:8px; color:#999; border:0; }
+      .card { display:flex; gap:18px; align-items:flex-start; background:#fff; padding:22px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.06); margin-bottom:18px; }
+      .info { flex:1;}
+      .estado { display:inline-block; padding:8px 12px; border-radius:14px; font-weight:600; margin-top:8px; }
+      .estado.Pendiente { background:#fff3cd; color:#856404; }
+      .estado.Completada { background:#d4edda; color:#155724; }
+      .estado.Cancelado { background:#f8d7da; color:#721c24; }
+      .estado.Rechazado { background:#f5c6cb; color:#721c24; }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><h4>JobXpress</h4></div>
+    <nav class="nav-links">
+        <a th:href="@{/cliente/home}">Inicio</a>
+        <a th:href="@{/cliente/historial}">Historial Contrataciones</a>
+        <a th:href="@{/cliente/perfil}">Tu perfil</a>
+        <a th:href="@{/cliente/dashboard}">Dashboard</a>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </nav>
+</header>
+
+<div class="contenedor">
+    <h1>Mis contrataciones</h1>
+    <p class="descripcion-pagina">
+        Aquí puedes consultar el historial de tus contrataciones, revisar los detalles del servicio,
+        el estado actual de cada solicitud y realizar ajustes cuando sea necesario.
+    </p>
+
+    <div id="historial"></div>
+</div>
+
+<!-- MODAL CALIFICAR -->
+<div id="modalCalificar" class="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:10px; width:340px; text-align:center;">
+        <h3>Calificar al prestador</h3>
+        <div id="estrellas" style="font-size:32px; margin:10px 0; cursor:pointer;">★★★★★</div>
+        <textarea id="comentarioCalificacion" placeholder="Escribe un comentario" style="width:100%; height:90px; margin-top:8px;"></textarea>
+        <button onclick="guardarCalificacion()" style="margin-top:12px; background:#2d6cdf; color:white; border:none; padding:10px; width:100%; border-radius:6px;">Guardar Calificación</button>
+        <button onclick="cerrarModalCalificar()" style="margin-top:8px; background:#f0f0f0; color:#333; border:none; padding:8px 10px; width:100%; border-radius:6px;">Cancelar</button>
+    </div>
+</div>
+
+<script>
+/* =========================
+   Inicialización / datos
+   ========================= */
+let usuarioActual = JSON.parse(localStorage.getItem("usuarioActual")) || { nombre: "Leandro Díaz" }; 
+// Si ya en tu app guardas usuarioActual en localStorage, lo usará; si no, por defecto usa "Leandro Díaz" (tu petición).
+let historial = JSON.parse(localStorage.getItem("historialContrataciones")) || [];
+
+// Para compatibilidad: algunos acuerdos pueden no tener el flag prestadorAcepto.
+// Recomendación: cuando crees un acuerdo pon prestadorAcepto:false; cuando prestador acepte pon true.
+
+let calificacionID = null;
+let ratingSeleccionado = 5;
+const contenedor = document.getElementById("historial");
+
+/* =========================
+   Estrellas dinámicas
+   ========================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const div = document.getElementById("estrellas");
+    if (!div) return;
+    div.addEventListener("mousemove", e => {
+        const pos = Math.ceil(e.offsetX / (div.clientWidth / 5));
+        div.innerHTML = "★★★★★".slice(0, pos) + "☆☆☆☆☆".slice(0, 5 - pos);
+    });
+    div.addEventListener("click", e => {
+        ratingSeleccionado = Math.ceil(e.offsetX / (div.clientWidth / 5));
+    });
+});
+
+/* =========================
+   Render del historial
+   ========================= */
+function render() {
+    contenedor.innerHTML = "";
+
+    if (!historial || historial.length === 0) {
+        contenedor.innerHTML = `<div class="vacio">No tienes contrataciones aún.</div>`;
+        return;
+    }
+
+    historial.forEach(item => {
+        // Normalizar valores necesarios
+        const prestadorAcepto = !!item.prestadorAcepto; // true/false
+        const showEditar = prestadorAcepto && (item.estado !== "Cancelado" && item.estado !== "Rechazado" && item.estado !== "Completada");
+        const showCancelar = (item.estado !== "Cancelado" && item.estado !== "Rechazado" && item.estado !== "Completada");
+
+        contenedor.innerHTML += `
+            <div class="card" data-id="${item.id}">
+                <img src="/images/usuario.png" alt="avatar" width="96" height="96" style="border-radius:50%; border:4px solid #29B6F6;">
+                <div class="info">
+                    <h3 style="color:#0277BD; margin-bottom:6px;">${item.prestador}</h3>
+                    <p><strong>Fecha:</strong> ${item.fecha}</p>
+                    <p><strong>Hora:</strong> ${item.hora}</p>
+                    <p><strong>Monto:</strong> $${item.monto} COP</p>
+                    <p><strong>Descripción:</strong> ${item.descripcion}</p>
+
+                    ${ item.calificacion ? 
+                        `<p style="margin-top:8px;"><strong>Calificación:</strong> ${"⭐".repeat(item.calificacion)}</p>
+                         <p><strong>Comentario:</strong> ${item.comentario || ""}</p>`
+                      : '' }
+
+                    <div style="margin-top:10px;">
+                       <span class="estado ${item.estado}">${item.estado}</span>
+                       ${ prestadorAcepto ? `<small style="margin-left:10px; color:#2d6cdf;">(Prestador aceptó)</small>` : `<small style="margin-left:10px; color:#888;">(Prestador no ha respondido)</small>` }
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+                    ${ showEditar ? `<button class="btn-editar" onclick="editar(${item.id})">Editar</button>` : '' }
+
+                    ${ showCancelar ? `<button class="btn-cancelar" onclick="cancelar(${item.id})">Cancelar</button>` : `<button class="btn-disabled" disabled>--</button>` }
+
+                    ${ item.estado === "Completada" ? `<button class="btn-editar" onclick="abrirCalificacion(${item.id})">Calificar prestador</button>` : '' }
+                </div>
+            </div>
+        `;
+    });
+}
+
+/* =========================
+   EDITAR: solo Pendiente y Completada
+   ========================= */
+function editar(id) {
+    const a = historial.find(x => x.id === id);
+    if (!a) return;
+
+    // Si el prestador no aceptó, no permitir editar (seguridad extra)
+    if (!a.prestadorAcepto) {
+        Swal.fire({ icon: "info", title: "El prestador debe aceptar primero", text: "No puedes editar hasta que el prestador acepte la solicitud.", confirmButtonColor:"#2d6cdf" });
+        return;
+    }
+
+    Swal.fire({
+        title: "Editar acuerdo",
+        html: `
+            <input type="date" id="fecha" class="swal2-input" value="${a.fecha}">
+            <input type="time" id="hora" class="swal2-input" value="${a.hora}">
+            <input type="number" id="monto" class="swal2-input" value="${a.monto}">
+            <select id="estado" class="swal2-input">
+                <option ${a.estado==="Pendiente"?"selected":""}>Pendiente</option>
+                <option ${a.estado==="Completada"?"selected":""}>Completada</option>
+            </select>
+            <textarea id="descripcion" class="swal2-textarea">${a.descripcion || ""}</textarea>
+        `,
+        showCancelButton: true,
+        confirmButtonText: "Guardar cambios",
+        confirmButtonColor: "#2d6cdf",
+        preConfirm: () => {
+            a.fecha = document.getElementById("fecha").value;
+            a.hora = document.getElementById("hora").value;
+            a.monto = document.getElementById("monto").value;
+            a.estado = document.getElementById("estado").value;
+            a.descripcion = document.getElementById("descripcion").value;
+
+            // persistir
+            localStorage.setItem("historialContrataciones", JSON.stringify(historial));
+        }
+    }).then(r => {
+        if (r.isConfirmed) {
+            Swal.fire({ toast:true, position:"top-end", icon:"success", title:"Actualizado", showConfirmButton:false, timer:1200 });
+            render();
+        }
+    });
+}
+
+/* =========================
+   CANCELAR (cliente cancela)
+   ========================= */
+function cancelar(id) {
+    const idx = historial.findIndex(x => x.id === id);
+    if (idx === -1) return;
+
+    Swal.fire({
+        title: "¿Cancelar este acuerdo?",
+        text: "La acción no se podrá deshacer fácilmente.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        confirmButtonText: "Sí, cancelar"
+    }).then(res => {
+        if (res.isConfirmed) {
+            historial[idx].estado = "Cancelado";
+            // opcional: también marcar prestadorAcepto false o dejar como estaba
+            localStorage.setItem("historialContrataciones", JSON.stringify(historial));
+            Swal.fire({ icon:"success", title:"Cancelado", confirmButtonColor:"#2d6cdf" });
+            render();
+        }
+    });
+}
+
+/* =========================
+   CALIFICAR
+   ========================= */
+function abrirCalificacion(id) {
+    const a = historial.find(x => x.id === id);
+    if (!a) return;
+
+    // Solo permitir abrir el modal si estado es Completada
+    if (a.estado !== "Completada") {
+        Swal.fire({ icon:"info", title:"Solo se puede calificar cuando el servicio está completado." });
+        return;
+    }
+
+    calificacionID = id;
+    document.getElementById("comentarioCalificacion").value = a.comentario || "";
+    ratingSeleccionado = a.calificacion || 5;
+
+    // ajustar visual estrellas antes de mostrar
+    const div = document.getElementById("estrellas");
+    if(div) div.innerHTML = "★★★★★".slice(0, ratingSeleccionado) + "☆☆☆☆☆".slice(0, 5 - ratingSeleccionado);
+
+    document.getElementById("modalCalificar").style.display = "flex";
+}
+
+function guardarCalificacion() {
+    const comentario = document.getElementById("comentarioCalificacion").value.trim();
+    const a = historial.find(x => x.id === calificacionID);
+    if (!a) return;
+
+    a.calificacion = ratingSeleccionado;
+    a.comentario = comentario;
+    localStorage.setItem("historialContrataciones", JSON.stringify(historial));
+
+    // Guardar también para el prestador
+    let valoracionesPrestador = JSON.parse(localStorage.getItem("valoracionesPrestador")) || [];
+    valoracionesPrestador.push({
+        id: calificacionID,
+        cliente: usuarioActual.nombre || "Cliente",
+        estrellas: ratingSeleccionado,
+        comentario: comentario,
+        fecha: new Date().toLocaleDateString(),
+        prestador: a.prestador
+    });
+    localStorage.setItem("valoracionesPrestador", JSON.stringify(valoracionesPrestador));
+
+    document.getElementById("modalCalificar").style.display = "none";
+    Swal.fire({ icon:"success", title:"¡Calificación guardada!", confirmButtonColor:"#2d6cdf" });
+    render();
+}
+function cerrarModalCalificar(){
+    document.getElementById("modalCalificar").style.display = "none";
+}
+
+/* =========================
+   Inicializar render
+   ========================= */
+render();
+
+</script>
+
+</body>
+</html>
